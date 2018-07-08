@@ -37,7 +37,6 @@ int main(){
     cin >> n;
     REP(i,n){
         int tmpa = 0; float tmpb = 0;
-//        cin >> tmpa >> tmpb;
         scanf("%d%f",&tmpa,&tmpb);
         a[tmpa] = tmpb;
     }
@@ -45,7 +44,6 @@ int main(){
     cin >> m;
     REP(i,m){
         int tmpa = 0; float tmpb = 0;
-//        cin >> tmpa >> tmpb;
         scanf("%d%f",&tmpa,&tmpb);
         b[tmpa] = tmpb;
     }
