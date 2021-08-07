@@ -1,0 +1,52 @@
+#!/bin/bash
+
+#./data > data.in
+#./std <data.in >std.out
+#./Todobe <data.in >Todobe.out
+
+#!/bin/bash
+usage="Usage: `basename $0` (build|judge|run)"
+command=$1
+
+function build() {
+    g++ main.cpp -o main -std=c++11
+}
+function judge() {
+    ./main < in.text > out
+    if diff ans.text out; then
+        printf "AC\n"
+    else
+        printf "Wa\n"
+        exit 0
+    fi
+}
+
+case $command in
+    (build)
+        echo "Start build......"
+        build
+        echo "Build Success!"
+        ;;
+    (judge)
+        echo "Start Judge......"
+        echo "Judge Result:\n"
+        judge
+        ;;
+    (all)
+        echo "Start build......"
+        build
+        echo "Build Success!"
+        echo "Start Judge......"
+        echo "Judge Result:"
+        judge
+        ;;
+    (*)
+        echo "Start build......"
+        build
+        echo "Build Success!"
+        echo "Start Judge......"
+        echo "Judge Result:"
+        echo ""
+        judge
+        ;;
+esac

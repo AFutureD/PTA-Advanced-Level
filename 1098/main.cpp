@@ -6,8 +6,10 @@
 #include <cmath>
 #include <cstring>
 #include <map>
+#include <set>
 #include <stack>
 #include <iomanip>
+#include <string>
 
 #define REP(i,n) for(int i = 0; i < (n); i++)
 #define REP_1(i,n) for(int i = 1; i < (n); i++)
@@ -18,11 +20,11 @@
 #define DWN(i,n) for(int i = (n); i > 0; i--)
 #define DWN_1(i,n) for(int i = (n); i > 1; i--)
 #define FOR_D(i,A,B) for(int i = (A); i > (B); i--)
-#define DWN_N(i,n) for(int i = (n); i >= 0; i--)
+#define DWN_0(i,n) for(int i = (n) - 1; i >= 0; i--)
 #define DWN_1_N(i,n) for(int i = (n); i >= 1; i--)
 #define FOR_D_N(i,A,B) for(int i = (A); i >= (B); i--)
 #define FILEIN(file) freopen((file),"r",stdin)
-#define FILEOUT   
+#define FILEOUT freopen("out.text","w",stdin)
 #define DEBUGB(block,message) cout << std::setw((block) * 4) << "" << "DEBUG Block " << (block) << ": BEGIN " << (message)<<endl
 #define DEBUGE(block,message) cout << std::setw((block) * 4) << "" << "DEBUG Block " << (block) << ": END " << (message)<<endl
 #define MEM0(OBJ) memset((OBJ),0,sizeof((OBJ)))
@@ -30,53 +32,48 @@
 
 using namespace std;
 
-int n,m,k;
-vector<int > node[1010];
-int vis[1010];
+int N;
+int a[110],b[110];
 
-void graph(int u){
-//    DEBUGB(2,"IN Graph");
-//    cout << u <<endl;
-    vis[u] = 1;
-    REP(i,node[u].size()){
-        if(vis[node[u][i]] == 0){
-            graph(node[u][i]);
-        }
+void downAdjust(int p){
+    swap(b[0],b[p]);
+    int i = 0,j = 2 * i + 1;
+    while(j <= p-1){
+        if(b[j+1] > b[j] && j+1 <= p-1)
+            j++;
+        if(b[i] < b[j]){
+            swap(b[i],b[j]);
+            i = j; j = j *2 + 1;
+        }else
+            break;
     }
-//    DEBUGE(2,"IN Graph");
 }
 
-int main(){
-    FILEIN("../in.text");
+int main() {
 
-    scanf("%d%d%d",&n,&m,&k);
+    cin >> N;
+    REP(i,N)
+        cin >> a[i];
+    REP(i,N)
+        cin >> b[i];
+    int p = 1;
+    while(b[p] >= b[p-1] && p++ < N);
+    int tmp_idx = p;
+    while(a[p] == b[p] && p++ < N);
 
-    REP(i,m){
-        int a,b;
-        scanf("%d%d",&a,&b);
-        node[a].push_back(b);
-        node[b].push_back(a);
+    if(p == N + 1){
+        printf("Insertion Sort\n");
+        sort(b,b+tmp_idx+1);
+        REP(i,N)
+            printf("%d%s",b[i],i==N-1?"\n":" ");
     }
-
-    while(k--){
-        int p,count;
-        scanf("%d",&p);
-        MEM0(vis);
-        vis[p] = 1;
-        count = 0;
-//        DEBUGB(0,"Start");
-//        cout << p <<endl;
-        REP_1_N(i,n){
-            if(vis[i] == 0){
-//                DEBUGB(1,"LOOP IN");
-                graph(i);
-                count++;
-//                DEBUGE(1,"LOOP OUT");
-            }
-
-        }
-        cout << count - 1 <<endl;
-
+    else{
+        printf("Heap Sort\n");
+        p = N-1;
+        while(b[p]>=b[p-1] && p-- >=2 );
+        downAdjust(p);
+        REP(i,N)
+            printf("%d%s",b[i],i==N-1?"\n":" ");
     }
     return 0;
 }

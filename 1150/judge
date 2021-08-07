@@ -1,0 +1,25 @@
+#!/bin/bash
+# while true; do
+    
+    # generate data
+    #./data > in.text
+
+    FOLDERNAME=basename $PWD;
+    OUTNAME="cmake-build-debug/"${FOLDERNAME};
+    echo $OUTNAME
+    # $OUTNAME="cmake-build-debug/"$FOLDERNAME
+    # # compile main.cpp
+    # g++ main.cpp -o $OUTNAME
+
+    # cd "cmake-build-debug"
+    # # run main with in.text
+    # ./main < in.text > mainout.text
+
+    # # judge if stand data having different with output data.
+    # if diff mainout.text out.text; then
+    #     printf "AC\n"
+    # else
+    #     printf "Wa\n"
+    #     exit 0
+    # fi
+# done

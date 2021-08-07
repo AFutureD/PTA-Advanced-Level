@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#./data > data.in
+#./std <data.in >std.out
+#./Todobe <data.in >Todobe.out
+./main < in.text > out
+if diff out.text out; then
+    printf "AC\n"
+else
+    printf "Wa\n"
+    exit 0
+fi

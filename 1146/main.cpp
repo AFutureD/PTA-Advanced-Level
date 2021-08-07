@@ -8,21 +8,21 @@
 #include <map>
 #include <stack>
 #include <iomanip>
-
+#include <iterator>
 #define REP(i,n) for(int i = 0; i < (n); i++)
 #define REP_1(i,n) for(int i = 1; i < (n); i++)
-#define FOR(i,A,B) for(int i = (A); i < (B); i++)
 #define REP_N(i,n) for(int i = 0; i <= (n); i++)
 #define REP_1_N(i,n) for(int i = 1; i <= (n); i++)
-#define FOR_N(i,A,B) for(int i = A; i <= (B); i++)
 #define DWN(i,n) for(int i = (n); i > 0; i--)
 #define DWN_1(i,n) for(int i = (n); i > 1; i--)
-#define FOR_D(i,A,B) for(int i = (A); i > (B); i--)
 #define DWN_N(i,n) for(int i = (n); i >= 0; i--)
 #define DWN_1_N(i,n) for(int i = (n); i >= 1; i--)
+#define FOR(i,A,B) for(int i = (A); i < (B); i++)
+#define FOR_N(i,A,B) for(int i = A; i <= (B); i++)
+#define FOR_D(i,A,B) for(int i = (A); i > (B); i--)
 #define FOR_D_N(i,A,B) for(int i = (A); i >= (B); i--)
 #define FILEIN(file) freopen((file),"r",stdin)
-#define FILEOUT   
+#define FILEOUT(file) freopen((file),"w",stdout)
 #define DEBUGB(block,message) cout << std::setw((block) * 4) << "" << "DEBUG Block " << (block) << ": BEGIN " << (message)<<endl
 #define DEBUGE(block,message) cout << std::setw((block) * 4) << "" << "DEBUG Block " << (block) << ": END " << (message)<<endl
 #define MEM0(OBJ) memset((OBJ),0,sizeof((OBJ)))
@@ -30,53 +30,48 @@
 
 using namespace std;
 
-int n,m,k;
-vector<int > node[1010];
-int vis[1010];
-
-void graph(int u){
-//    DEBUGB(2,"IN Graph");
-//    cout << u <<endl;
-    vis[u] = 1;
-    REP(i,node[u].size()){
-        if(vis[node[u][i]] == 0){
-            graph(node[u][i]);
-        }
-    }
-//    DEBUGE(2,"IN Graph");
-}
+int n,m,t;
+vector <int> edges[1010]; // edges[1].push_back(2) 
+                          // edges[2].push_back(1)
+                          // edges[i] i -> index 
+                          // i -> j
+int in[1010],in2[1010];
+int que[1010];
 
 int main(){
-    FILEIN("../in.text");
+    // FILEIN("../in.text");
+    // FILEOUT("../out.text");
 
-    scanf("%d%d%d",&n,&m,&k);
-
+    scanf("%d%d",&n,&m);
+    
+    MEM0(in);
     REP(i,m){
         int a,b;
         scanf("%d%d",&a,&b);
-        node[a].push_back(b);
-        node[b].push_back(a);
+        edges[a].push_back(b);
+        in[b]++;
     }
 
-    while(k--){
-        int p,count;
-        scanf("%d",&p);
-        MEM0(vis);
-        vis[p] = 1;
-        count = 0;
-//        DEBUGB(0,"Start");
-//        cout << p <<endl;
-        REP_1_N(i,n){
-            if(vis[i] == 0){
-//                DEBUGB(1,"LOOP IN");
-                graph(i);
-                count++;
-//                DEBUGE(1,"LOOP OUT");
+    scanf("%d",&t);
+    int flag = 0;
+    REP(i,t){
+        
+        REP(j,n) scanf("%d",&que[j]); 
+
+        REP_N(j,n) in2[j] = in[j]; 
+
+        REP(j,n)
+            if(in2[que[j]] == 0) 
+                REP(k,edges[que[j]].size()) in2[edges[que[j]][k]]--; 
+            else{
+                printf("%s%d",flag == 1 ? " " : "",i);
+                flag = 1;
+                break;
             }
-
-        }
-        cout << count - 1 <<endl;
-
     }
+
+    printf("\n");
+    
+
     return 0;
 }
